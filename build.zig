@@ -4,11 +4,17 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    // Dependencies
+    const riff = b.dependency("riff_zig", .{});
+
     // Library module declaration
     const lib_mod = b.addModule("ziggywebp", .{
         .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = optimize,
+        .imports = &.{
+            .{ .name = "riff", .module = riff.module("riff_zig") },
+        },
     });
 
     // Library installation
