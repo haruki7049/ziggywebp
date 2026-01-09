@@ -23,6 +23,21 @@
 
       perSystem =
         { pkgs, lib, ... }:
+        let
+          ziggywebp = pkgs.stdenv.mkDerivation {
+            name = "ziggywebp";
+            src = lib.cleanSource ./.;
+            doCheck = true;
+
+            nativeBuildInputs = [
+              pkgs.zig_0_15.hook
+            ];
+
+            postPatch = ''
+              ln -s ${pkgs.callPackage ./.deps.nix { }} $ZIG_GLOBAL_CACHE_DIR/p
+            '';
+          };
+        in
         {
           treefmt = {
             projectRootFile = ".git/config";
@@ -39,6 +54,15 @@
 
             # Markdown
             programs.mdformat.enable = true;
+          };
+
+          packages = {
+            inherit ziggywebp;
+            default = ziggywebp;
+          };
+
+          checks = {
+            inherit ziggywebp;
           };
 
           devShells.default = pkgs.mkShell {
