@@ -1,0 +1,17 @@
+.{
+    .name = .ziggywebp,
+    .version = "0.0.0",
+    .fingerprint = 0x5c38c0b578f0ed55, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.2",
+
+    .dependencies = .{},
+
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "LICENSE-APACHE",
+        "LICENSE-MIT",
+        "README.md",
+    },
+}
