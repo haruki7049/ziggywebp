@@ -35,6 +35,21 @@ pub fn build(b: *std.Build) void {
     const test_step = b.step("test", "Run unit tests");
     test_step.dependOn(&run_lib_unit_tests.step);
 
+    // Integration tests
+    // Webp
+    const wave_integration_test = b.addTest(.{
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("tests/webp.zig"),
+            .target = target,
+            .optimize = optimize,
+            .imports = &.{
+                .{ .name = "ziggywebp", .module = lib_mod },
+            },
+        }),
+    });
+    const run_wave_integration_tests = b.addRunArtifact(wave_integration_test);
+    test_step.dependOn(&run_wave_integration_tests.step);
+
     // Docs
     const docs_step = b.step("docs", "Emit docs");
     const docs_install = b.addInstallDirectory(.{
